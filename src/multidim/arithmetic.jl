@@ -11,6 +11,7 @@
 
 *(a::IntervalBox, b::Real) = IntervalBox( a.v .* b )
 *(a::Real, b::IntervalBox) = IntervalBox( a .* b.v )
+*(A::AbstractMatrix, X::IntervalBox) = IntervalBox(A * X.v)
 
 /(a::IntervalBox, b::Real) = IntervalBox( a.v ./ b )
 

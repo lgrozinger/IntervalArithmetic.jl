@@ -59,6 +59,11 @@ See `mid(X::Interval, α=0.5)` for more informations.
 mid(X::IntervalBox) = mid.(X)
 mid(X::IntervalBox, α) = mid.(X, α)
 
+mean(X::IntervalBox) = (inf(X) + sup(X)) * 0.5
+
+inf(X::IntervalBox) = inf.(X)
+sup(X::IntervalBox) = sup.(X)
+
 big(X::IntervalBox) = big.(X)
 
 
@@ -67,6 +72,9 @@ big(X::IntervalBox) = big.(X)
 # TODO: Update to use generator
 ⊆(X::IntervalBox{N,T}, Y::IntervalBox{N,T}) where {N,T} =
     all(X.v .⊆ Y.v)
+
+⊂(X::IntervalBox{N,T}, Y::IntervalBox{N,T}) where {N,T} =
+    isinterior(X, Y)
 
 ∩(X::IntervalBox{N,T}, Y::IntervalBox{N,T}) where {N,T} =
     IntervalBox(X.v .∩ Y.v)
@@ -88,6 +96,9 @@ isempty(X::IntervalBox) = any(isempty, X.v)
 diam(X::IntervalBox) = maximum(diam.(X.v))
 
 emptyinterval(X::IntervalBox{N,T}) where {N,T} = IntervalBox(emptyinterval.(X.v))
+
+zero(X::IntervalBox{N,T}) where {N, T<:Real} = IntervalBox(zero(Interval{T}), N)
+zero(::Type{IntervalBox{N,T}}) where {N, T<:Real} = IntervalBox(zero(Interval{T}), N)
 
 isinf(X::IntervalBox) = any(isinf.(X))
 
