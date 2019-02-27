@@ -59,7 +59,7 @@ See `mid(X::Interval, α=0.5)` for more informations.
 mid(X::IntervalBox) = mid.(X)
 mid(X::IntervalBox, α) = mid.(X, α)
 
-mean(X::IntervalBox) = (inf(X) + sup(X)) * 0.5
+mean(X::IntervalBox) = (inf(X) + sup(X)) / 2
 
 inf(X::IntervalBox) = inf.(X)
 sup(X::IntervalBox) = sup.(X)
@@ -117,3 +117,5 @@ IntervalBox(x::Interval, ::Val{n}) where {n} = IntervalBox(SVector(ntuple( _ -> 
 IntervalBox(x::Interval, n::Int) = IntervalBox(x, Val(n))
 
 dot(x::IntervalBox, y::IntervalBox) = dot(x.v, y.v)
+dot(x::Vector, y::IntervalBox) = dot(x, y.v)
+dot(x::IntervalBox, y::Vector) = dot(x.v, y)
